@@ -12,7 +12,7 @@ This is more or less a step by step conversion of the Eucalyptus setup documenta
 
 #### After running this cookbook successfully:
 
-  * You *might* need to manually register Eucalyptus components on CLC.  I've set these up as LWRPs which will run after setup is complete (but they all ignore failure), but I haven't seen it work consistently.  Seems like you've got to go to https://your-cloud-controller.example.com:8443/, register thru the web interface (default login/password is admin/admin), and then on the nodes use the `euca_conf` tool to register your nodes, storage controller, and walrus(es).  You may be able to just register these thru the web interface as well.
+  * You *might* need to manually register Eucalyptus components on CLC.  I've set these up as LWRPs which will run after setup is complete (but they all ignore failure), but I haven't seen it work consistently.  Seems like you've got to go to https://your-cloud-controller.example.com:8443/, register thru the web interface (default login/password is admin/admin), and then on the cloud controller use the `euca_conf` tool to register your nodes, storage controller, and walrus(es).  You may be able to just register these thru the web interface as well.
   * Getting your Eucalyptus credentials.  (Get get the zip file thru the web interface)
   * Check if everything is good.  As root on the CC, run:  `euca_conf --get-credentials euca.zip && unzip euca.zip && source eucarc && euca-describe-availability-zones verbose`.  You should see numbers that are not "0" under "free / max" in the output.
   * To run instances, you'll need to register some EMIs. [Registering and uploading EMIs](http://open.eucalyptus.com/wiki/EucalyptusImageManagement_v2.0)
