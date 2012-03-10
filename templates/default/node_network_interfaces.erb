@@ -1,0 +1,40 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+#allow-hotplug eth0
+#iface eth0 inet dhcp
+
+#auto eth0
+#iface eth0 inet manual
+auto <%= @pub_interface %>
+iface <%= @pub_interface %> inet manual
+
+# Network bridge
+#auto br0
+#	iface br0 inet static
+#	address 10.0.127.1
+#	network 10.0.0.0
+#	netmask 255.255.0.0
+#	broadcast 10.0.255.255
+#	gateway 10.0.0.1
+#	bridge_ports eth0
+#	bridge_stp off
+#	bridge_fd 0
+#	bridge_maxwait 0
+#
+auto <%= @bridge_interface %>
+iface <%= @bridge_interface %> inet static
+  address <%= @address %>
+  network <%= @network %>
+  netmask <%= @netmask %>
+  broadcast <%= @broadcasst %>
+  gateway <%= @gateway %>
+  bridge_ports <%= @pub_interface %>
+	bridge_stp off
+	bridge_fd 0
+	bridge_maxwait 0
