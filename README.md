@@ -54,6 +54,7 @@ Please note the "eucalyptus" role, which should contain your specific config  ([
 ## TODO: 
 
 * **LWRPs**
+  * `euca-describe-properties` & `euca-modify-property` - for changing settings seen in the CLC web interface.  would also need to restart appropriate component (sc, walrus, etc), I think.
   * [eustore integration](http://coderslike.us/2012/01/21/eustore-a-set-of-image-tools-for-your-cloud/)
   * create/edit security groups
   * volume creation/attachment
@@ -67,6 +68,8 @@ Please note the "eucalyptus" role, which should contain your specific config  ([
   * also seeing some weird shit wwhere sometimes the `/var/run/eucalyptus/jsp` and `/var/run/eucalyptus/webapp` directories need to be `rm -rf'd` and /etc/init.d/eucalyptus-cloud restarted.  This condition seems to manifest itself as seeing a directory listing at  https://your-cloud-controller.example.com:8443/
 * **On all**
   * see whether setting defaults for storage controller / walrus config works by setting values in groovy scripts in `/etc/eucalyptus/cloud.d`
+* **Within the cookbook**
+  * decouple CLC and CC recipe
 
 ## CONTRIBUTING:
 
