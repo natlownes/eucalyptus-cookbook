@@ -4,7 +4,7 @@ name             'eucalyptus'
 license          "Apache 2.0"
 description      "Installs/Configures eucalyptus-cookbook"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.0.2"
+version          "0.0.21"
 
 attribute 'euca/front_end',
   :description => %{Your cloud controller's (resolvable) hostname or IP address},
@@ -34,7 +34,7 @@ attribute 'euca/ssh_public_key',
   :required => 'required'
 
 
-dependencies = %w(apt ntp kvm)
+dependencies = %w(apt ntp kvm logrotate)
 
 dependencies.each do |dep|
   depends dep

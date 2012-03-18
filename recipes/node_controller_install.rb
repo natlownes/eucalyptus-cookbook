@@ -98,3 +98,9 @@ template "/etc/eucalyptus/eucalyptus.conf" do
   action :create
 end
 
+logrotate_app "eucalyptus-node-controller" do
+  cookbook 'logrotate'
+  path      ['/var/log/eucalyptus/nc.log']
+  frequency 'daily'
+  rotate    7
+end

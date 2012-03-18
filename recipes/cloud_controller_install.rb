@@ -48,3 +48,23 @@ template "/etc/eucalyptus/eucalyptus.conf" do
   notifies :run,          resources(:execute => "eucalyptus-clean-restart"), :immediately
   notifies :restart,      resources(:service => "eucalyptus-cloud"), :immediately
 end
+
+logrotate_app "eucalyptus-cluster-controller" do
+  cookbook 'logrotate'
+  path      ['/var/log/eucalyptus/cc.log']
+  frequency 'daily'
+  rotate    7
+end
+
+logrotate_app "eucalyptus-cloud-controller" do
+  cookbook 'logrotate'
+  path      [
+    '/var/log/eucalyptus/cloud-output.log',
+    '/var/log/eucalyptus/cloud-exhaust.log',
+    '/var/log/eucalyptus/cloud-cluster.log',
+    '/var/log/eucalyptus/cloud-debug.log',
+    '/var/log/eucalyptus/cloud-error.log'
+  ]
+  frequency 'daily'
+  rotate    7
+end
