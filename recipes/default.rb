@@ -44,7 +44,7 @@ if node[:euca][:tarball_url]
   end
 
   execute "out-dpkgs" do
-    cwd "#{Chef::Config[:file_cache_path]}/euca-#{euca_version}"
+    cwd "#{Chef::Config[:file_cache_path]}/euca-mirror"
     command "dpkg-scanpackages . > Packages"
     notifies :add, "apt_repository[eucalyptus-local]", :immediately
 
@@ -52,7 +52,7 @@ if node[:euca][:tarball_url]
   end
 
   apt_repository "eucalyptus-local" do
-    uri "file://#{Chef::Config[:file_cache_path]}/euca-#{euca_version}/"
+    uri "file://#{Chef::Config[:file_cache_path]}/euca-mirror/"
     distribution "squeeze"
     components %w(main)
     action :nothing
