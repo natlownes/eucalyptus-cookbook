@@ -40,7 +40,7 @@ if node[:euca][:tarball_url]
 
     action :nothing
 
-    notifies :run, "execute[extract-dpkgs]", :immediately
+    #notifies :run, "execute[extract-dpkgs]", :immediately
   end.run_action(:create_if_missing)
 
   execute "extract-dpkgs" do
@@ -49,7 +49,7 @@ if node[:euca][:tarball_url]
 
     action :nothing
 
-    notifies :run, "execute[out-dpkgs]", :immediately
+    #notifies :run, "execute[out-dpkgs]", :immediately
   end.run_action(:run)
 
   execute "out-dpkgs" do
