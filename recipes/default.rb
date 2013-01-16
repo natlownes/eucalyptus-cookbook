@@ -22,12 +22,53 @@ require_recipe 'eucalyptus::cloud_controller_registration'
 
 euca_version = node[:euca][:install][:version]
 
-apt_repository "eucalyptus" do
-  uri "http://eucalyptussoftware.com/downloads/repo/eucalyptus/#{euca_version}/debian/"
-  distribution "squeeze"
-  components %w(main)
-  action :add
-  notifies :run, resources(:execute => "apt-get update"), :immediately
+package 'dpkg-dev' do
+  action :install
+end
+
+if node[:euca][:tarball_url]
+  remote_file "#{Chef::Config[:file_cache_path]}/euca-#{euca_version}.tar.gz" do
+    source node[:euca][:tarball_url]
+
+    action :create_if_missing
+
+    notifies :run, "execute[extract-dpkgs]", :immediately
+  end
+
+  execute "extract-dpkgs" do
+    command "tar -xzvf euca-#{euca_version}.tar.gz"
+    cwd Chef::Config[:file_cache_path]
+    action :nothing
+
+    notifies :run, "execute[out-dpkgs]", :immediately
+  end
+
+  execute "out-dpkgs" do
+    cwd "#{Chef::Config[:file_cache_path]}/euca-#{euca_version}"
+    command "dpkg-scanpackages . > Packages"
+    notifies :add, "apt_repository[eucalyptus-local]", :immediately
+
+    action :nothing
+  end
+
+  apt_repository "eucalyptus-local" do
+    uri "file://#{Chef::Config[:file_cache_path]}/euca-#{euca_version}/"
+    distribution "squeeze"
+    components %w(main)
+    action :nothing
+    notifies :run, resources(:execute => "apt-get update"), :immediately
+  end
+
+else
+  # try this repo that doesn't work
+  # right now
+  apt_repository "eucalyptus" do
+    uri "http://eucalyptussoftware.com/downloads/repo/eucalyptus/#{euca_version}/debian/"
+    distribution "squeeze"
+    components %w(main)
+    action :add
+    notifies :run, resources(:execute => "apt-get update"), :immediately
+  end
 end
 
 service "eucalyptus-nc" do

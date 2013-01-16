@@ -1,4 +1,5 @@
 default[:euca][:install][:version] = "2.0.3"
+default[:euca][:tarball_url] = "https://s3.amazonaws.com/tgerla-euca/euca-debian-2.0.3-mirror.tar.gz"
 
 default[:euca][:user] = "eucalyptus"
 default[:euca][:hypervisor] = "kvm"
