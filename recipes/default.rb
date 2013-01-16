@@ -38,7 +38,12 @@ if node[:euca][:tarball_url]
   execute "extract-dpkgs" do
     command "tar -xzvf euca-#{euca_version}.tar.gz"
     cwd Chef::Config[:file_cache_path]
-    action :nothing
+
+    action :run
+
+    only_if {
+      FileTest.directory?("#{Chef::Config[:file_cache_path]}/euca-mirror")
+    }
 
     notifies :run, "execute[out-dpkgs]", :immediately
   end
