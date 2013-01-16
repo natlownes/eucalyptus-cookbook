@@ -40,20 +40,20 @@ if node[:euca][:tarball_url]
     cwd Chef::Config[:file_cache_path]
 
     action :run
-
-    only_if {
-      FileTest.directory?("#{Chef::Config[:file_cache_path]}/euca-mirror")
-    }
-
     notifies :run, "execute[out-dpkgs]", :immediately
   end
 
   execute "out-dpkgs" do
     cwd "#{Chef::Config[:file_cache_path]}/euca-mirror"
     command "dpkg-scanpackages . > Packages"
+
     notifies :add, "apt_repository[eucalyptus-local]", :immediately
 
-    action :nothing
+    action :run
+
+    only_if {
+      FileTest.directory?("#{Chef::Config[:file_cache_path]}/euca-mirror")
+    }
   end
 
   apt_repository "eucalyptus-local" do
