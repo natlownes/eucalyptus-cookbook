@@ -28,7 +28,7 @@ end
 
 if node[:euca][:tarball_url]
   apt_repository "eucalyptus-local" do
-    uri "file://#{Chef::Config[:file_cache_path]}/euca-mirror/"
+    uri "file://#{Chef::Config[:file_cache_path]}/euca-mirror/debian/"
     distribution "squeeze"
     components %w(main)
     action :add
