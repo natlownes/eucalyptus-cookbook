@@ -27,42 +27,41 @@ package 'dpkg-dev' do
 end
 
 if node[:euca][:tarball_url]
+  apt_repository "eucalyptus-local" do
+    uri "file://#{Chef::Config[:file_cache_path]}/euca-mirror/"
+    distribution "squeeze"
+    components %w(main)
+    action :run
+    notifies :run, resources(:execute => "apt-get update"), :immediately
+  end
+
   remote_file "#{Chef::Config[:file_cache_path]}/euca-#{euca_version}.tar.gz" do
     source node[:euca][:tarball_url]
 
-    action :create_if_missing
+    action :nothing
 
     notifies :run, "execute[extract-dpkgs]", :immediately
-  end
+  end.run_action(:create_if_missing)
 
   execute "extract-dpkgs" do
     command "tar -xzvf euca-#{euca_version}.tar.gz"
     cwd Chef::Config[:file_cache_path]
 
-    action :run
+    action :nothing
+
     notifies :run, "execute[out-dpkgs]", :immediately
-  end
+  end.run_action(:run)
 
   execute "out-dpkgs" do
     cwd "#{Chef::Config[:file_cache_path]}/euca-mirror"
     command "dpkg-scanpackages . > Packages"
 
-    notifies :add, "apt_repository[eucalyptus-local]", :immediately
-
-    action :run
+    action :nothing
 
     only_if {
       FileTest.directory?("#{Chef::Config[:file_cache_path]}/euca-mirror")
     }
-  end
-
-  apt_repository "eucalyptus-local" do
-    uri "file://#{Chef::Config[:file_cache_path]}/euca-mirror/"
-    distribution "squeeze"
-    components %w(main)
-    action :nothing
-    notifies :run, resources(:execute => "apt-get update"), :immediately
-  end
+  end.run_action(:run)
 
 else
   # try this repo that doesn't work
