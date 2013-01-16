@@ -31,7 +31,7 @@ if node[:euca][:tarball_url]
     uri "file://#{Chef::Config[:file_cache_path]}/euca-mirror/"
     distribution "squeeze"
     components %w(main)
-    action :run
+    action :add
     notifies :run, resources(:execute => "apt-get update"), :immediately
   end
 
